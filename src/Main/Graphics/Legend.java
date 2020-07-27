@@ -9,33 +9,34 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class Legend extends Pane implements Graphic{
-    private Color[] colors;
-    private String[] datatypes;
+    private ArrayList<Color> colors;
+    private ArrayList<String> datatypes;
     private double size;
 
 
-    Legend(Color[] colors, String[] datatypes, double size){
+    Legend(ArrayList<Color> colors, ArrayList<String> datatypes, double size){
         this.colors = colors;
         this.datatypes = datatypes;
         this.size = size;
         drawLegend();
     }
     private void drawLegend(){
-        if(colors.length!=datatypes.length){
+        if(colors.size()!=datatypes.size()){
             throw new InputMismatchException("Datatypes and lengths are of different sizes");
         }
         VBox vBox = new VBox();
-        for(int i=0;i<colors.length;i++){
+        for(int i=0;i<colors.size();i++){
             HBox hBox = new HBox();
             Rectangle color = new Rectangle();
             color.setWidth(size);
             color.setHeight(size);
-            Label label = new Label(datatypes[i]);
+            Label label = new Label(datatypes.get(i));
             label.setFont(new Font("Arial",size));
-            color.setFill(colors[i]);
+            color.setFill(colors.get(i));
             hBox.getChildren().add(color);
             hBox.getChildren().add(label);
             vBox.getChildren().add(hBox);
@@ -44,8 +45,11 @@ public class Legend extends Pane implements Graphic{
     }
 
     @Override
-    public void setColors(Color[] colors) {
+    public void setColors(ArrayList<Color> colors) {
         this.colors = colors;
         drawLegend();
+    }
+
+    public void addType(Color color, double length){
     }
 }
