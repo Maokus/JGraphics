@@ -3,6 +3,9 @@ module CSEOYProj {
     requires javafx.base;
     requires javafx.media;
     requires javafx.controls;
-    exports Main to javafx.graphics;
-    exports Main.Graphics to javafx.graphics;
+    requires java.desktop;
+    requires java.logging;
+    requires javafx.swing;
+    exports View to javafx.graphics;
+    exports Graphics to javafx.graphics;
 }
