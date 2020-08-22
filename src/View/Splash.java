@@ -35,7 +35,6 @@ public class Splash extends Application {
         //VBOX to hold stuff
         VBox vb = new VBox();
         vb.getChildren().add(mediaView);
-        vb.getChildren().add(new Label("By Markus"));
         vb.setAlignment(Pos.CENTER);
 
         root.getChildren().add(vb);

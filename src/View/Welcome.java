@@ -45,12 +45,12 @@ public class Welcome {
 
         //buttons
         Button newProjButton = new Button("New Project");
-        Button openProjButton = new Button("Open Project");
-        openProjButton.translateYProperty().bind(add(30,newProjButton.translateYProperty()));
+        Button aboutButton = new Button("About");
+        aboutButton.translateYProperty().bind(add(30,newProjButton.translateYProperty()));
         newProjButton.setStyle("-fx-background-color: white; -fx-font-family: Lato; -fx-font-size: 20;");
-        openProjButton.setStyle("-fx-background-color: white;-fx-font-family: Lato; -fx-font-size: 20;");
+        aboutButton.setStyle("-fx-background-color: white;-fx-font-family: Lato; -fx-font-size: 20;");
         welcomeHolder.getChildren().add(newProjButton);
-        welcomeHolder.getChildren().add(openProjButton);
+        welcomeHolder.getChildren().add(aboutButton);
 
         //Make welcome pulse
         FadeTransition start = new FadeTransition(Duration.seconds(1),welcomeHolder);
@@ -78,22 +78,29 @@ public class Welcome {
                 newProjButton.setTextFill(Color.BLACK);
             }
         });
-        openProjButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+        aboutButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                openProjButton.setTextFill(new Color(0,0.3,0.6,1));
+                aboutButton.setTextFill(new Color(0,0.3,0.6,1));
             }
         });
-        openProjButton.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+        aboutButton.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                openProjButton.setTextFill(Color.BLACK);
+                aboutButton.setTextFill(Color.BLACK);
             }
         });
         newProjButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 CreateProj.start(primaryStage);
+            }
+        });
+        aboutButton.setOnMouseClicked(e->{
+            try {
+                AboutScreen.start();
+            }catch(Exception ex){
+                ex.printStackTrace();
             }
         });
 
