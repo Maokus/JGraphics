@@ -19,15 +19,19 @@ import java.util.Optional;
 import static javafx.beans.binding.Bindings.divide;
 
 public class EditProj {
+
+
     private static boolean withBorder = false;
     private static Color[] baseColors = null;
     private static PickColor nearColors = null;
+
+
     public static void start(Stage primaryStage){
         nearColors = new PickColor(baseColors);
         Pane root = new Pane();
         //sideoverlay exists in order to use the alignment property.
         StackPane sideOverlay = new StackPane();
-        SidePane sidePane = new SidePane();
+        SidePane sidePane = new SidePane(nearColors);
 
         //Make a sidepane to edit stuff
         sidePane.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -49,9 +53,12 @@ public class EditProj {
         PieChart pc = new PieChart();
         pc.getData().add(new PieChart.Data("Data1",10));
         pc.getData().add(new PieChart.Data("Data2",20));
+        pc.setLegendVisible(false);
+        nearColors.applyPieChartColorSequence(pc.getData());
         sidePane.setMode(root);
         vb.getChildren().add(pc);
         root.getChildren().add(vb);
+
         pc.setOnMouseClicked(e->{
             sidePane.setMode(pc);
         });
@@ -64,8 +71,13 @@ public class EditProj {
 
         BarChart barChart = new BarChart(xAxis, yAxis);
 
+        XYChart.Series dataSeries1 = new XYChart.Series();
+        dataSeries1.getData().add(new XYChart.Data("X1", 100));
+        dataSeries1.getData().add(new XYChart.Data("X2", 200));
+        dataSeries1.getData().add(new XYChart.Data("X3", 300));
+        barChart.getData().add(dataSeries1);
         XYChart.Series dataSeries = new XYChart.Series();
-        dataSeries.getData().add(new XYChart.Data("X1", 100));
+        dataSeries.getData().add(new XYChart.Data("X4", 100));
         dataSeries.getData().add(new XYChart.Data("X2", 200));
         dataSeries.getData().add(new XYChart.Data("X3", 300));
         barChart.getData().add(dataSeries);

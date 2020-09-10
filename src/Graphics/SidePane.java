@@ -2,11 +2,15 @@ package Graphics;
 
 import Model.PickColor;
 import View.EditProj;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -19,8 +23,12 @@ import static javafx.beans.binding.Bindings.divide;
 public class SidePane extends Pane {
     Button exportButton = new Button("Export project");
     Button closeButton = new Button("Close Side Pane");
-    public SidePane(){
+    PickColor pickColor;
+
+    public SidePane(PickColor pickColor){
+        this.pickColor = pickColor;
     }
+
     public void setMode(Node type){
         getChildren().clear();
         if(type instanceof PieChart) {
@@ -74,6 +82,7 @@ public class SidePane extends Pane {
                     ex.printStackTrace();
                 }
             }
+            pickColor.applyPieChartColorSequence(currPie.getData());
         });
 
         holder.add(addNewRowButton,0,currPie.getData().size());
@@ -84,18 +93,46 @@ public class SidePane extends Pane {
     }
 
     private void setModeBarChart(BarChart currBarChart){
+
+        int currInd = 0;
         GridPane holder = new GridPane();
         ArrayList<TextField> names = new ArrayList<TextField>();
         ArrayList<TextField> datas = new ArrayList<TextField>();
+
         for (int i=0; i<currBarChart.getData().size();i++) {
-            TextField name = new TextField();
-            TextField data = new TextField();
-            names.add(name);
-            datas.add(data);
-            holder.add(name,0,i);
-            holder.add(data,0,i);
+
+            Label seriesLabel = new Label("Series "+String.valueOf(i+1));
+            seriesLabel.setPadding(new Insets(10));
+            seriesLabel.setStyle("-fx-background-color: lightgrey;");
+            seriesLabel.prefWidthProperty().bind(divide(widthProperty(),2));
+            holder.add(seriesLabel,0,currInd);
+
+            Pane seriesPane = new Pane();
+            holder.add(seriesPane,1,currInd);
+            seriesPane.setStyle("-fx-background-color: lightgrey;");
+            seriesPane.prefWidthProperty().bind(divide(widthProperty(),2));
+
+            currInd += 1;
+
+            for(XYChart.Data xydata: (ObservableList<XYChart.Data>)
+                    ((XYChart.Series)
+                            currBarChart.getData().get(i)).getData()){
+                TextField name = new TextField();
+                TextField data = new TextField();
+                name.prefWidthProperty().bind(divide(widthProperty(),2));
+                data.prefWidthProperty().bind(divide(widthProperty(),2));
+                name.setText(xydata.getXValue().toString());
+                data.setText(xydata.getYValue().toString());
+                names.add(name);
+                datas.add(data);
+                holder.add(name, 0, currInd);
+                holder.add(data, 1, currInd);
+                currInd++;
+            }
         }
+        getChildren().add(holder);
     }
+
     private void setModePane(Pane currPane){
         VBox vBox = new VBox();
         PickColor pc = EditProj.getNearColors();
