@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class PickColor {
     private ArrayList<Color> colors = new ArrayList<Color>();
 
-    private int nextColorInd = 1;
+    private int nextColorInd = 0;
 
     public PickColor(Color[] colors){
         for(Color c: colors){
@@ -30,13 +30,24 @@ public class PickColor {
         }
 
     }
+    public void applyBarChartColorSequence(
+            ObservableList<PieChart.Data> pieChartData) {
+        for (int i=0; i<pieChartData.size();i++) {
+            pieChartData.get(i).getNode().setStyle(
+                    "-fx-pie-color: " + getNextColor().toString().replace("0x", "#") + ";" + ";"
+            );
+
+        }
+
+    }
 
     private Color getNextColor(){
+        System.out.println(nextColorInd);
         Color nextColor = colors.get(nextColorInd);
         nextColorInd += 3;
         if(nextColorInd >= colors.size()){
-            nextColorInd %= 3;
             nextColorInd++;
+            nextColorInd %= 3;
         }
         return  nextColor;
     }

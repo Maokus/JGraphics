@@ -27,6 +27,7 @@ public class EditProj {
 
 
     public static void start(Stage primaryStage){
+        primaryStage.setFullScreen(true);
         nearColors = new PickColor(baseColors);
         Pane root = new Pane();
         //sideoverlay exists in order to use the alignment property.
@@ -36,7 +37,7 @@ public class EditProj {
         //Make a sidepane to edit stuff
         sidePane.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        //make the sidepane always take upa  fourth of the window
+        //make the sidepane always take up a  fourth of the window
         sideOverlay.prefHeightProperty().bind(root.heightProperty());
         sideOverlay.prefWidthProperty().bind(root.widthProperty());
         sidePane.prefHeightProperty().bind(root.heightProperty());
@@ -77,10 +78,13 @@ public class EditProj {
         dataSeries1.getData().add(new XYChart.Data("X3", 300));
         barChart.getData().add(dataSeries1);
         XYChart.Series dataSeries = new XYChart.Series();
+        dataSeries.getData().add(new XYChart.Data("X1", 100));
         dataSeries.getData().add(new XYChart.Data("X4", 100));
         dataSeries.getData().add(new XYChart.Data("X2", 200));
         dataSeries.getData().add(new XYChart.Data("X3", 300));
         barChart.getData().add(dataSeries);
+
+        barChart.setLegendVisible(false);
         vb.getChildren().add(barChart);
 
         barChart.setOnMouseClicked(e->{

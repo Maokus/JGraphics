@@ -1,5 +1,6 @@
 package View;
 
+import Graphics.LatoButton;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -47,10 +48,8 @@ public class CreateProj{
         Stage secondaryStage = new Stage();
         StackPane root = new StackPane();
         root.setStyle("-fx-background-color: white;");
-        Button cancelButton = new Button("Cancel");
-        Button confirmButton = new Button("Confirm");
-        cancelButton.setStyle("-fx-background-color: white; -fx-font-family: Lato; -fx-font-size: 20;");
-        confirmButton.setStyle("-fx-background-color: white; -fx-font-family: Lato; -fx-font-size: 20;");
+        Button cancelButton = new LatoButton("Cancel",20);
+        Button confirmButton = new LatoButton("Confirm",20);
         cancelButton.setPadding(new Insets(20));
         confirmButton.setPadding(new Insets(20));
 
@@ -103,9 +102,9 @@ public class CreateProj{
         Slider slider = new Slider();
         slider.setPadding(new Insets(30));
         slider.setPrefWidth(root.getWidth()/2);
-        slider.setMin(1);
-        slider.setMax(12);
-        slider.setValue(1);
+        slider.setMin(0);
+        slider.setMax(11);
+        slider.setValue(0);
         slider.setShowTickLabels(false);
         slider.setShowTickMarks(false);
 

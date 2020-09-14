@@ -5,6 +5,7 @@ import View.EditProj;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
@@ -54,11 +55,20 @@ public class SidePane extends Pane {
             dataValues.add(dataValue);
             holder.add(dataType,0,i);
             holder.add(dataValue,1,i);
+
+
+            dataType.setPadding(new Insets(10));
+            dataValue.setPadding(new Insets(10));
+            dataType.setStyle("-fx-background-insets: 5px;");
+            dataValue.setStyle("-fx-background-insets: 5px;");
         }
 
         Button confirmButton = new Button("Confirm");
         Button addNewRowButton = new Button("Add new row");
         Button removeRowButton = new Button("Remove last row");
+        confirmButton.setAlignment(Pos.CENTER);
+        addNewRowButton.setAlignment(Pos.CENTER);
+        removeRowButton.setAlignment(Pos.CENTER);
 
         addNewRowButton.setOnAction(e->{
             getChildren().clear();

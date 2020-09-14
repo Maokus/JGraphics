@@ -1,5 +1,6 @@
 package View;
 
+import Graphics.LatoButton;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -44,13 +45,13 @@ public class Welcome {
         welcomeHolder.setOpacity(0);
 
         //buttons
-        Button newProjButton = new Button("New Project");
-        Button aboutButton = new Button("About");
-        aboutButton.translateYProperty().bind(add(30,newProjButton.translateYProperty()));
-        newProjButton.setStyle("-fx-background-color: white; -fx-font-family: Lato; -fx-font-size: 20;");
-        aboutButton.setStyle("-fx-background-color: white;-fx-font-family: Lato; -fx-font-size: 20;");
-        welcomeHolder.getChildren().add(newProjButton);
-        welcomeHolder.getChildren().add(aboutButton);
+        VBox buttonHolder = new VBox();
+        Button newProjButton = new LatoButton("New Project",20);
+        Button aboutButton = new LatoButton("About",20);
+        buttonHolder.getChildren().add(newProjButton);
+        buttonHolder.getChildren().add(aboutButton);
+        buttonHolder.setAlignment(Pos.CENTER);
+        welcomeHolder.getChildren().add(buttonHolder);
 
         //Make welcome pulse
         FadeTransition start = new FadeTransition(Duration.seconds(1),welcomeHolder);
@@ -66,18 +67,6 @@ public class Welcome {
         fadein.setOnFinished((e)->{fade.play();});
         fade.setOnFinished((e)->{fadein.play();});
 
-        newProjButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                newProjButton.setTextFill(new Color(0,0.3,0.6,1));
-            }
-        });
-        newProjButton.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                newProjButton.setTextFill(Color.BLACK);
-            }
-        });
         aboutButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
