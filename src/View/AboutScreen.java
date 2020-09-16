@@ -15,6 +15,7 @@ import java.awt.*;
 
 public class AboutScreen {
     public static void start() throws Exception {
+        //TODO: Apply internationalisation
         Stage aboutStage = new Stage();
         StackPane root = new StackPane();
         aboutStage.setScene(new Scene(root,500,500));
