@@ -8,7 +8,8 @@ The current supported graphic classes are:
  * Pie chart
  * Bar Graph (Half implemented)
 
- the export but
+//TODO: Implement jfilechooser for the export button
+//TODO: Implement ImageView Sidepane compatibility
  */
 import Model.PickColor;
 import View.EditProj;
@@ -195,14 +196,13 @@ public class SidePane extends Pane {
         //Confirming
         //TODO: check validity of numbers entered in data field
         confirmButton.setOnMouseClicked(e->{
-            currBarChart.getData().clear();
             for(int i = 0; i<nameseries.size();i++){
-                XYChart.Series currSeries = new XYChart.Series();
                 for(int j = 0; j<nameseries.get(i).size();j++) {
-                    currSeries.getData().add(new XYChart.Data(nameseries.get(i).get(j).getText(),
-                            Integer.parseInt(dataseries.get(i).get(j).getText())));
+                    ((XYChart.Data)((XYChart.Series)currBarChart.getData().get(i)).getData().get(j))
+                    .setXValue(nameseries.get(i).get(j).getText());
+                    ((XYChart.Data)((XYChart.Series)currBarChart.getData().get(i)).getData().get(j))
+                            .setYValue(Integer.valueOf(dataseries.get(i).get(j).getText()));
                 }
-                currBarChart.getData().add(currSeries);
             }
         });
 

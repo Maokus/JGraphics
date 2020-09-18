@@ -9,5 +9,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ProjectPane extends Pane {
-
+    public ProjectPane(){
+        super();
+    }
+    public ProjectPane(int w, int h){
+        super();
+    }
 }

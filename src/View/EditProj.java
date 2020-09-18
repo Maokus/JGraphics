@@ -72,10 +72,11 @@ public class EditProj {
 
         BarChart barChart = new BarChart(xAxis, yAxis);
 
-        XYChart.Series dataSeries1 = new XYChart.Series();
+        XYChart.Series dataSeries1 =  new XYChart.Series();
         dataSeries1.getData().add(new XYChart.Data("X1", 100));
         dataSeries1.getData().add(new XYChart.Data("X2", 200));
         dataSeries1.getData().add(new XYChart.Data("X3", 300));
+        dataSeries1.getData().add(new XYChart.Data("X4", 0));
         barChart.getData().add(dataSeries1);
         XYChart.Series dataSeries = new XYChart.Series();
         dataSeries.getData().add(new XYChart.Data("X1", 100));

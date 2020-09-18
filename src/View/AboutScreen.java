@@ -21,6 +21,7 @@ public class AboutScreen {
         aboutStage.setScene(new Scene(root,500,500));
         Button label = new Button("Built by Markus Ang");
         root.getChildren().add(label);
+        root.setStyle("-fx-background-color: white");
         label.setStyle("-fx-font-family: Lato; -fx-font-size: 20; -fx-background-color: transparent");
         aboutStage.show();
         Application application = new Application() {
