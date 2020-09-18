@@ -11,10 +11,10 @@ The current supported graphic classes are:
 //TODO: Implement jfilechooser for the export button
 //TODO: Implement ImageView Sidepane compatibility
  */
-import Model.PickColor;
+import Model.UserColorPalatte;
 import View.EditProj;
+import View.UserChooseColor;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,14 +22,11 @@ import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,9 +35,9 @@ import static javafx.beans.binding.Bindings.divide;
 public class SidePane extends Pane {
     LatoButton exportButton = new LatoButton("Export project",15);
     LatoButton closeButton = new LatoButton("Close Side Pane",15);
-    PickColor pickColor;
+    UserColorPalatte pickColor;
 
-    public SidePane(PickColor pickColor){
+    public SidePane(UserColorPalatte pickColor){
         this.pickColor = pickColor;
     }
 
@@ -50,6 +47,8 @@ public class SidePane extends Pane {
             setModePieChart((PieChart) type);
         }else if(type instanceof BarChart){
             setModeBarChart((BarChart) type);
+        }else if(type instanceof ProjectPane){
+            setModeProjectPane((ProjectPane) type);
         }
     }
 
@@ -214,7 +213,7 @@ public class SidePane extends Pane {
 
     private void setModePane(Pane currPane){
         VBox vBox = new VBox();
-        PickColor pc = EditProj.getNearColors();
+        UserColorPalatte pc = EditProj.getNearColors();
         for(int i=0; i<pc.getColors().size();i++){
             Rectangle currRect = new Rectangle();
             vBox.getChildren().add(currRect);
@@ -225,6 +224,16 @@ public class SidePane extends Pane {
         getChildren().add(vBox);
         getChildren().add(exportButton);
         getChildren().add(closeButton);
+    }
+
+    private void setModeProjectPane(ProjectPane currPane){
+        VBox vb = new VBox();
+        LatoButton lb = new LatoButton("Choose color scheme",15);
+        vb.getChildren().add(lb);
+        getChildren().add(lb);
+        lb.setOnMouseClicked(e->{
+            UserChooseColor.start();
+        });
     }
     public LatoButton getExportButton(){
         return exportButton;

@@ -46,8 +46,8 @@ public class Welcome {
 
         //buttons
         VBox buttonHolder = new VBox();
-        Button newProjButton = new LatoButton("New Project",20);
-        Button aboutButton = new LatoButton("About",20);
+        LatoButton newProjButton = new LatoButton("New Project",20);
+        LatoButton aboutButton = new LatoButton("About",20);
         buttonHolder.getChildren().add(newProjButton);
         buttonHolder.getChildren().add(aboutButton);
         buttonHolder.setAlignment(Pos.CENTER);
@@ -67,22 +67,11 @@ public class Welcome {
         fadein.setOnFinished((e)->{fade.play();});
         fade.setOnFinished((e)->{fadein.play();});
 
-        aboutButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                aboutButton.setTextFill(new Color(0,0.3,0.6,1));
-            }
-        });
-        aboutButton.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                aboutButton.setTextFill(Color.BLACK);
-            }
-        });
         newProjButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                CreateProj.start(primaryStage);
+                EditProj.setBaseColors(new Color[]{Color.color(1,0,0),Color.color(0,1,1)});
+                ProjectSettings.start(primaryStage);
             }
         });
         aboutButton.setOnMouseClicked(e->{

@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 public class RunFrom extends Application {
     public void start(Stage primaryStage) throws Exception {
-        CreateProj.start(primaryStage);
+        Welcome.start(primaryStage);
     }
     public static void main(String[] args){
         launch(args);

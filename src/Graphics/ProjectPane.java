@@ -14,5 +14,9 @@ public class ProjectPane extends Pane {
     }
     public ProjectPane(int w, int h){
         super();
+        this.setMaxHeight(h);
+        this.setMaxWidth(w);
+        this.setMinHeight(h);
+        this.setMinWidth(w);
     }
 }

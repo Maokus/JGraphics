@@ -1,34 +1,37 @@
 package View;
 
+import Graphics.ProjectPane;
 import Graphics.SidePane;
-import Model.PickColor;
+import Model.Draggable;
+import Model.UserColorPalatte;
 import Model.PngEncoder;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static javafx.beans.binding.Bindings.divide;
+import static javafx.beans.binding.Bindings.multiply;
 
 public class EditProj {
 
 
     private static boolean withBorder = false;
     private static Color[] baseColors = null;
-    private static PickColor nearColors = null;
+    private static UserColorPalatte nearColors = null;
 
 
-    public static void start(Stage primaryStage){
+    public static void start(Stage primaryStage,int projectWidth, int projectHeight){
         primaryStage.setFullScreen(true);
-        nearColors = new PickColor(baseColors);
+        nearColors = new UserColorPalatte(baseColors);
         Pane root = new Pane();
         //sideoverlay exists in order to use the alignment property.
         StackPane sideOverlay = new StackPane();
@@ -49,16 +52,21 @@ public class EditProj {
         root.getChildren().add(sideOverlay);
 
         //Placeholder
-        VBox vb = new VBox();
+        ScrollPane sp = new ScrollPane();
+        ProjectPane vb = new ProjectPane(projectWidth,projectHeight);
+        sp.setContent(vb);
+        sp.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
+        sp.prefHeightProperty().bind(root.heightProperty());
 
         PieChart pc = new PieChart();
         pc.getData().add(new PieChart.Data("Data1",10));
         pc.getData().add(new PieChart.Data("Data2",20));
         pc.setLegendVisible(false);
+        Draggable.Nature pieN = new Draggable.Nature(pc);
         nearColors.applyPieChartColorSequence(pc.getData());
         sidePane.setMode(root);
         vb.getChildren().add(pc);
-        root.getChildren().add(vb);
+        root.getChildren().add(sp);
 
         pc.setOnMouseClicked(e->{
             sidePane.setMode(pc);
@@ -84,6 +92,7 @@ public class EditProj {
         dataSeries.getData().add(new XYChart.Data("X2", 200));
         dataSeries.getData().add(new XYChart.Data("X3", 300));
         barChart.getData().add(dataSeries);
+        Draggable.Nature barN = new Draggable.Nature(barChart);
 
         barChart.setLegendVisible(false);
         vb.getChildren().add(barChart);
@@ -123,6 +132,6 @@ public class EditProj {
     public static void setBaseColors(Color[] colors){
         baseColors = colors;
     }
-    public static PickColor getNearColors(){return nearColors;}
+    public static UserColorPalatte getNearColors(){return nearColors;}
     public static Color[] getBaseColors() {return baseColors;}
 }

@@ -6,12 +6,12 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
-public class PickColor {
+public class UserColorPalatte {
     private ArrayList<Color> colors = new ArrayList<Color>();
 
     private int nextColorInd = 0;
 
-    public PickColor(Color[] colors){
+    public UserColorPalatte(Color[] colors){
         for(Color c: colors){
             this.colors.add(c.darker());
             this.colors.add(c);

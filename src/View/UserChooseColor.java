@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
-public class CreateProj{
+public class UserChooseColor {
 
     private static int getType(String type){
         switch (type){
@@ -44,7 +44,7 @@ public class CreateProj{
         }
     }
 
-    public static void start(Stage primaryStage){
+    public static void start(){
         Stage secondaryStage = new Stage();
         StackPane root = new StackPane();
         root.setStyle("-fx-background-color: white;");
@@ -146,7 +146,6 @@ public class CreateProj{
         confirmButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(currentRotation[0]);
                 int[] type = selections[getType((String)typeChoice.getValue())];
                 ArrayList<Color> color = new ArrayList<Color>();
                 for(int i:type){
@@ -161,7 +160,6 @@ public class CreateProj{
                 color1 = color.toArray(color1);
                 EditProj.setBaseColors(color1);
                 secondaryStage.close();
-                EditProj.start(primaryStage);
             }
         });
         cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
