@@ -10,20 +10,21 @@ The current supported graphic classes are:
 
 //TODO: Implement jfilechooser for the export button
 //TODO: Implement ImageView Sidepane compatibility
+
  */
 import Model.UserColorPalatte;
 import View.EditProj;
 import View.UserChooseColor;
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -35,6 +36,7 @@ import static javafx.beans.binding.Bindings.divide;
 public class SidePane extends Pane {
     LatoButton exportButton = new LatoButton("Export project",15);
     LatoButton closeButton = new LatoButton("Close Side Pane",15);
+    LatoButton backButton = new LatoButton("Back",15);
     UserColorPalatte pickColor;
 
     public SidePane(UserColorPalatte pickColor){
@@ -53,6 +55,7 @@ public class SidePane extends Pane {
     }
 
     private void setModePieChart(PieChart currPie){
+        setManaged(true);
         GridPane holder = new GridPane();
         Label pane1 = new Label("Labels");
         pane1.setPadding(new Insets(10));
@@ -123,6 +126,7 @@ public class SidePane extends Pane {
         holder.add(confirmButton,1,currPie.getData().size()+1);
         holder.add(exportButton,1,currPie.getData().size()+2);
         holder.setOpacity(0);
+        holder.add(closeButton,0,currPie.getData().size()+3);
         getChildren().add(holder);
         FadeTransition f = new FadeTransition(Duration.seconds(0.5),holder);
         f.setFromValue(0);
@@ -131,6 +135,7 @@ public class SidePane extends Pane {
     }
 
     private void setModeBarChart(BarChart currBarChart){
+        setManaged(true);
 
         int currInd = 0;
         GridPane holder = new GridPane();
@@ -140,8 +145,11 @@ public class SidePane extends Pane {
         ArrayList<LatoButton> removeRowButtons = new ArrayList<LatoButton>();
         LatoButton confirmButton = new LatoButton("Confirm",15);
         LatoButton exportButton = new LatoButton("Export",15);
+        //TODO: Implement newseries and remove series.
+        LatoButton newSeriesButton = new LatoButton("New series",15);
+        LatoButton removeSeriesButton = new LatoButton("Remove series",15);
 
-
+        //TODO: Fix barchart data initializing. Data does not always appear in the barchart.
         for (int i=0; i<currBarChart.getData().size();i++) {
             nameseries.add(new ArrayList<TextField>());
             dataseries.add(new ArrayList<TextField>());
@@ -178,8 +186,8 @@ public class SidePane extends Pane {
                 holder.add(data, 1, currInd);
                 currInd++;
             }
-            LatoButton addRowButton = new LatoButton("Add new row", 14);
-            LatoButton removeRowButton = new LatoButton("Remove last row", 14);
+            LatoButton addRowButton = new LatoButton("Add to series "+(addRowButtons.size()+1), 14);
+            LatoButton removeRowButton = new LatoButton("Remove from series "+(addRowButtons.size()+1), 14);
             holder.add(addRowButton,0,currInd);
             holder.add(removeRowButton,1,currInd);
             currInd++;
@@ -187,23 +195,59 @@ public class SidePane extends Pane {
             removeRowButtons.add(removeRowButton);
 
         }
+
+
+        currInd += 1;
+
         holder.add(confirmButton,0,currInd);
         holder.add(exportButton,1,currInd);
         currInd += 1;
+        holder.add(closeButton,0,currInd);
         getChildren().add(holder);
 
         //Confirming
         //TODO: check validity of numbers entered in data field
+
         confirmButton.setOnMouseClicked(e->{
             for(int i = 0; i<nameseries.size();i++){
                 for(int j = 0; j<nameseries.get(i).size();j++) {
+
                     ((XYChart.Data)((XYChart.Series)currBarChart.getData().get(i)).getData().get(j))
                     .setXValue(nameseries.get(i).get(j).getText());
                     ((XYChart.Data)((XYChart.Series)currBarChart.getData().get(i)).getData().get(j))
                             .setYValue(Integer.valueOf(dataseries.get(i).get(j).getText()));
+
                 }
             }
         });
+
+
+        for(int i=0; i<addRowButtons.size(); i++){
+            addRowButtons.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    String text = ((LatoButton)mouseEvent.getSource()).getText();
+                    String[] textSplit = text.split(" ");
+                    int index = Integer.valueOf(textSplit[3])-1;
+                    ((XYChart.Series)currBarChart.getData().get(index)).getData().add(new XYChart.Data("",0));
+                    setMode(currBarChart);
+                }
+            });
+        }
+
+        for(int i=0; i<addRowButtons.size(); i++){
+            removeRowButtons.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    String text = ((LatoButton)mouseEvent.getSource()).getText();
+                    String[] textSplit = text.split(" ");
+                    int index = Integer.valueOf(textSplit[3])-1;
+                    ObservableList a = ((XYChart.Series)currBarChart.getData().get(index)).getData();
+                    a.remove(a.size()-1);
+                    setMode(currBarChart);
+                }
+            });
+        }
 
         FadeTransition f = new FadeTransition(Duration.seconds(0.5),holder);
         f.setFromValue(0);
@@ -211,6 +255,7 @@ public class SidePane extends Pane {
         f.play();
     }
 
+    //No function yet
     private void setModePane(Pane currPane){
         VBox vBox = new VBox();
         UserColorPalatte pc = EditProj.getNearColors();
@@ -227,19 +272,31 @@ public class SidePane extends Pane {
     }
 
     private void setModeProjectPane(ProjectPane currPane){
+        BorderPane sp = new BorderPane();
         VBox vb = new VBox();
+        sp.getChildren().add(vb);
         LatoButton lb = new LatoButton("Choose color scheme",15);
+        vb.getChildren().add(closeButton);
         vb.getChildren().add(lb);
-        getChildren().add(lb);
         lb.setOnMouseClicked(e->{
             UserChooseColor.start();
         });
+        getChildren().add(sp);
+
+        lb.setAlignment(Pos.TOP_CENTER);
+        closeButton.setAlignment(Pos.TOP_CENTER);
+        vb.setAlignment(Pos.TOP_CENTER);
     }
+
     public LatoButton getExportButton(){
         return exportButton;
     }
     public LatoButton getCloseButton(){
         return closeButton;
+    }
+    public LatoButton getBackButton() { return backButton;}
+    public void setPickColor(UserColorPalatte u){
+        this.pickColor = u;
     }
 
 

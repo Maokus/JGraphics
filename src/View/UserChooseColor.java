@@ -140,7 +140,6 @@ public class UserChooseColor {
                 currentRotation[0] = (int)Math.round(slider.getValue());
                 outline.setRotate(15+(30*(currentRotation[0]-1)));
                 slider.setValue(currentRotation[0]);
-                System.out.println(currentRotation[0]);
             } });
 
         confirmButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -153,7 +152,6 @@ public class UserChooseColor {
                     if(currc>11){
                         currc-=12;
                     }
-                    System.out.println(currc);
                     color.add(colors[currc]);
                 }
                 Color color1[] = new Color[color.size()];

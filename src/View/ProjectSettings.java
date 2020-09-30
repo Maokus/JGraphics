@@ -1,6 +1,8 @@
 package View;
 
+import Graphics.CustomTextField;
 import Graphics.LatoButton;
+import Graphics.LatoLabel;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,11 +21,11 @@ public class ProjectSettings {
         Scene scene = new Scene(root,500,400);
         GridPane holder = new GridPane();
         root.getChildren().add(holder);
-        TextField widthField = new TextField();
-        TextField heightField = new TextField();
-        holder.add(new Label("Width"),0,0);
+        CustomTextField widthField = new CustomTextField();
+        CustomTextField heightField = new CustomTextField();
+        holder.add(new LatoLabel("Width: ",15),0,0);
         holder.add(widthField,1,0);
-        holder.add(new Label("Height"),0,1);
+        holder.add(new LatoLabel("Height: ",15),0,1);
         holder.add(heightField,1,1);
 
         LatoButton cancelButton = new LatoButton("Cancel",20);

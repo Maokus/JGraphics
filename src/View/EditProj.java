@@ -18,8 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.Optional;
 
-import static javafx.beans.binding.Bindings.divide;
-import static javafx.beans.binding.Bindings.multiply;
+import static javafx.beans.binding.Bindings.*;
 
 public class EditProj {
 
@@ -27,15 +26,14 @@ public class EditProj {
     private static boolean withBorder = false;
     private static Color[] baseColors = null;
     private static UserColorPalatte nearColors = null;
+    private static SidePane sidePane = new SidePane(null);
 
 
     public static void start(Stage primaryStage,int projectWidth, int projectHeight){
-        primaryStage.setFullScreen(true);
         nearColors = new UserColorPalatte(baseColors);
         Pane root = new Pane();
         //sideoverlay exists in order to use the alignment property.
         StackPane sideOverlay = new StackPane();
-        SidePane sidePane = new SidePane(nearColors);
 
         //Make a sidepane to edit stuff
         sidePane.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -69,6 +67,7 @@ public class EditProj {
         root.getChildren().add(sp);
 
         pc.setOnMouseClicked(e->{
+            sp.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
             sidePane.setMode(pc);
         });
 
@@ -98,6 +97,7 @@ public class EditProj {
         vb.getChildren().add(barChart);
 
         barChart.setOnMouseClicked(e->{
+            sp.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
             sidePane.setMode(barChart);
         });
 
@@ -111,6 +111,7 @@ public class EditProj {
 
         primaryStage.setFullScreen(true);
         primaryStage.setScene(new Scene(root,500,500));
+
         sidePane.getExportButton().setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             Optional<ButtonType> result = alert.showAndWait();
@@ -123,14 +124,24 @@ public class EditProj {
             }
 
         });
+        sidePane.getCloseButton().setOnMouseClicked(e-> {
+                sidePane.setManaged(false);
+                sp.prefWidthProperty().bind(root.widthProperty());
+            }
+        );
+
         System.out.println(baseColors);
         primaryStage.show();
+        sidePane.setMode(vb);
+        primaryStage.setFullScreen(true);
 
     }
 
 
     public static void setBaseColors(Color[] colors){
         baseColors = colors;
+        nearColors = new UserColorPalatte(baseColors);
+        sidePane.setPickColor(nearColors);
     }
     public static UserColorPalatte getNearColors(){return nearColors;}
     public static Color[] getBaseColors() {return baseColors;}
