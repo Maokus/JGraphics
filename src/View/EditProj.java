@@ -49,12 +49,14 @@ public class EditProj {
 
         root.getChildren().add(sideOverlay);
 
+        ScrollPane scrollPane = new ScrollPane();
+        ProjectPane projectPane = new ProjectPane(projectWidth,projectHeight);
+        scrollPane.setContent(projectPane);
+        scrollPane.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
+        scrollPane.prefHeightProperty().bind(root.heightProperty());
+
+
         //Placeholder
-        ScrollPane sp = new ScrollPane();
-        ProjectPane vb = new ProjectPane(projectWidth,projectHeight);
-        sp.setContent(vb);
-        sp.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
-        sp.prefHeightProperty().bind(root.heightProperty());
 
         PieChart pc = new PieChart();
         pc.getData().add(new PieChart.Data("Data1",10));
@@ -62,12 +64,13 @@ public class EditProj {
         pc.setLegendVisible(false);
         Draggable.Nature pieN = new Draggable.Nature(pc);
         nearColors.applyPieChartColorSequence(pc.getData());
+
         sidePane.setMode(root);
-        vb.getChildren().add(pc);
-        root.getChildren().add(sp);
+        projectPane.getChildren().add(pc);
+        root.getChildren().add(scrollPane);
 
         pc.setOnMouseClicked(e->{
-            sp.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
+            scrollPane.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
             sidePane.setMode(pc);
         });
 
@@ -78,6 +81,8 @@ public class EditProj {
         yAxis.setLabel("Y axis");
 
         BarChart barChart = new BarChart(xAxis, yAxis);
+
+        barChart.setAnimated(false);
 
         XYChart.Series dataSeries1 =  new XYChart.Series();
         dataSeries1.getData().add(new XYChart.Data("X1", 100));
@@ -94,10 +99,10 @@ public class EditProj {
         Draggable.Nature barN = new Draggable.Nature(barChart);
 
         barChart.setLegendVisible(false);
-        vb.getChildren().add(barChart);
+        projectPane.getChildren().add(barChart);
 
         barChart.setOnMouseClicked(e->{
-            sp.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
+            scrollPane.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
             sidePane.setMode(barChart);
         });
 
@@ -106,7 +111,7 @@ public class EditProj {
             r.setHeight(10);
             r.setWidth(10);
             r.setFill(c);
-            vb.getChildren().add(r);
+            projectPane.getChildren().add(r);
         }
 
         primaryStage.setFullScreen(true);
@@ -126,13 +131,26 @@ public class EditProj {
         });
         sidePane.getCloseButton().setOnMouseClicked(e-> {
                 sidePane.setManaged(false);
-                sp.prefWidthProperty().bind(root.widthProperty());
+                scrollPane.prefWidthProperty().bind(root.widthProperty());
             }
         );
 
+        sidePane.getAddPieChartButton().setOnMouseClicked(e->{
+            PieChart newPieChart = new PieChart();
+            newPieChart.setLegendVisible(false);
+            Draggable.Nature newPieNature = new Draggable.Nature(newPieChart);
+            nearColors.applyPieChartColorSequence(newPieChart.getData());
+            projectPane.getChildren().add(newPieChart);
+            newPieChart.getData().add(new PieChart.Data("Data1",10));
+            newPieChart.setOnMouseClicked(event1->{
+                scrollPane.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
+                sidePane.setMode(newPieChart);
+            });
+        });
+
         System.out.println(baseColors);
         primaryStage.show();
-        sidePane.setMode(vb);
+        sidePane.setMode(projectPane);
         primaryStage.setFullScreen(true);
 
     }

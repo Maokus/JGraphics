@@ -34,7 +34,7 @@ public class AboutScreen {
             language = b.getSelectionModel().getSelectedItem();
         }
         l = new Locale(language,"US");
-        ResourceBundle rb = ResourceBundle.getBundle("AboutScreen",l);
+        ResourceBundle rb = ResourceBundle.getBundle("Assets/AboutScreen",l);
 
         root = new StackPane();
         aboutStage.setScene(new Scene(root,500,500));

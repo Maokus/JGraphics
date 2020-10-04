@@ -30,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import static javafx.beans.binding.Bindings.divide;
 
@@ -37,6 +38,7 @@ public class SidePane extends Pane {
     LatoButton exportButton = new LatoButton("Export project",15);
     LatoButton closeButton = new LatoButton("Close Side Pane",15);
     LatoButton backButton = new LatoButton("Back",15);
+    LatoButton addPieChartButton = new LatoButton("Add Pie Chart", 15);
     UserColorPalatte pickColor;
 
     public SidePane(UserColorPalatte pickColor){
@@ -134,6 +136,7 @@ public class SidePane extends Pane {
         f.play();
     }
 
+    //TODO: REMOVE BUGS
     private void setModeBarChart(BarChart currBarChart){
         setManaged(true);
 
@@ -272,20 +275,25 @@ public class SidePane extends Pane {
     }
 
     private void setModeProjectPane(ProjectPane currPane){
-        BorderPane sp = new BorderPane();
+        setManaged(true);
+        StackPane stackPane = new StackPane();
+        stackPane.prefWidthProperty().bind(this.widthProperty());
         VBox vb = new VBox();
-        sp.getChildren().add(vb);
+        stackPane.getChildren().add(vb);
         LatoButton lb = new LatoButton("Choose color scheme",15);
         vb.getChildren().add(closeButton);
         vb.getChildren().add(lb);
+        vb.getChildren().add(addPieChartButton);
+
         lb.setOnMouseClicked(e->{
             UserChooseColor.start();
         });
-        getChildren().add(sp);
 
+        getChildren().add(stackPane);
         lb.setAlignment(Pos.TOP_CENTER);
         closeButton.setAlignment(Pos.TOP_CENTER);
         vb.setAlignment(Pos.TOP_CENTER);
+
     }
 
     public LatoButton getExportButton(){
@@ -295,9 +303,14 @@ public class SidePane extends Pane {
         return closeButton;
     }
     public LatoButton getBackButton() { return backButton;}
+    public LatoButton getAddPieChartButton() {
+        return addPieChartButton;
+    }
+
     public void setPickColor(UserColorPalatte u){
         this.pickColor = u;
     }
+
 
 
 }
