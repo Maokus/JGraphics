@@ -55,9 +55,6 @@ public class EditProj {
         scrollPane.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
         scrollPane.prefHeightProperty().bind(root.heightProperty());
 
-
-        //Placeholder
-
         PieChart pc = new PieChart();
         pc.getData().add(new PieChart.Data("Data1",10));
         pc.getData().add(new PieChart.Data("Data2",20));
@@ -74,6 +71,7 @@ public class EditProj {
             sidePane.setMode(pc);
         });
 
+        /*
         CategoryAxis xAxis    = new CategoryAxis();
         xAxis.setLabel("X axis");
 
@@ -105,6 +103,8 @@ public class EditProj {
             scrollPane.prefWidthProperty().bind(multiply(divide(root.widthProperty(),4),3));
             sidePane.setMode(barChart);
         });
+
+         */
 
         for(Color c: nearColors.getColors()){
             Rectangle r = new Rectangle();
@@ -146,6 +146,14 @@ public class EditProj {
                 scrollPane.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
                 sidePane.setMode(newPieChart);
             });
+        });
+
+        sidePane.getProjectSettingsButton().setOnMouseClicked(e->{
+            sidePane.setMode(projectPane);
+        });
+
+        sidePane.getDeleteButton().setOnMouseClicked(e->{
+            projectPane.getChildren().remove(sidePane.getSelectedItem());
         });
 
         System.out.println(baseColors);

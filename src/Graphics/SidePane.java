@@ -30,7 +30,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 import static javafx.beans.binding.Bindings.divide;
 
@@ -38,7 +37,12 @@ public class SidePane extends Pane {
     LatoButton exportButton = new LatoButton("Export project",15);
     LatoButton closeButton = new LatoButton("Close Side Pane",15);
     LatoButton backButton = new LatoButton("Back",15);
+    LatoButton projectSettingsButton = new LatoButton("Project Settings",15);
     LatoButton addPieChartButton = new LatoButton("Add Pie Chart", 15);
+    LatoButton deleteButton = new LatoButton("Delete Node",15);
+
+    Node selectedItem;
+
     UserColorPalatte pickColor;
 
     public SidePane(UserColorPalatte pickColor){
@@ -49,10 +53,13 @@ public class SidePane extends Pane {
         getChildren().clear();
         if(type instanceof PieChart) {
             setModePieChart((PieChart) type);
+            selectedItem = (PieChart) type;
         }else if(type instanceof BarChart){
             setModeBarChart((BarChart) type);
+            selectedItem = (BarChart) type;
         }else if(type instanceof ProjectPane){
             setModeProjectPane((ProjectPane) type);
+            selectedItem = (ProjectPane) type;
         }
     }
 
@@ -94,6 +101,7 @@ public class SidePane extends Pane {
         LatoButton confirmButton = new LatoButton("Confirm",15);
         LatoButton addNewRowButton = new LatoButton("Add new row",15);
         LatoButton removeRowButton = new LatoButton("Remove last row",15);
+
         confirmButton.setAlignment(Pos.CENTER);
         addNewRowButton.setAlignment(Pos.CENTER);
         removeRowButton.setAlignment(Pos.CENTER);
@@ -126,9 +134,9 @@ public class SidePane extends Pane {
         holder.add(addNewRowButton,0,currPie.getData().size()+1);
         holder.add(removeRowButton,0,currPie.getData().size()+2);
         holder.add(confirmButton,1,currPie.getData().size()+1);
-        holder.add(exportButton,1,currPie.getData().size()+2);
         holder.setOpacity(0);
-        holder.add(closeButton,0,currPie.getData().size()+3);
+        holder.add(projectSettingsButton,1,currPie.getData().size()+2);
+        holder.add(deleteButton,0,currPie.getData().size()+3);
         getChildren().add(holder);
         FadeTransition f = new FadeTransition(Duration.seconds(0.5),holder);
         f.setFromValue(0);
@@ -280,10 +288,21 @@ public class SidePane extends Pane {
         stackPane.prefWidthProperty().bind(this.widthProperty());
         VBox vb = new VBox();
         stackPane.getChildren().add(vb);
+
+        Pane title = new Pane();
+        title.setStyle("-fx-background-color: lightgrey;");
+        LatoLabel titleLabel = new LatoLabel("Project settings",15);
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setPadding(new Insets(10));
+        title.getChildren().add(titleLabel);
+        title.prefWidthProperty().bind(this.widthProperty());
+        vb.getChildren().add(title);
+
         LatoButton lb = new LatoButton("Choose color scheme",15);
         vb.getChildren().add(closeButton);
         vb.getChildren().add(lb);
         vb.getChildren().add(addPieChartButton);
+        vb.getChildren().add(exportButton);
 
         lb.setOnMouseClicked(e->{
             UserChooseColor.start();
@@ -305,6 +324,17 @@ public class SidePane extends Pane {
     public LatoButton getBackButton() { return backButton;}
     public LatoButton getAddPieChartButton() {
         return addPieChartButton;
+    }
+    public LatoButton getDeleteButton() {
+        return deleteButton;
+    }
+
+    public LatoButton getProjectSettingsButton() {
+        return projectSettingsButton;
+    }
+
+    public Node getSelectedItem() {
+        return selectedItem;
     }
 
     public void setPickColor(UserColorPalatte u){
