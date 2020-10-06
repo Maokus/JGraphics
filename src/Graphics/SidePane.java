@@ -12,6 +12,7 @@ The current supported graphic classes are:
 //TODO: Implement ImageView Sidepane compatibility
 
  */
+import Model.Draggable;
 import Model.UserColorPalatte;
 import View.EditProj;
 import View.UserChooseColor;
@@ -27,8 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static javafx.beans.binding.Bindings.divide;
@@ -39,6 +42,7 @@ public class SidePane extends Pane {
     LatoButton backButton = new LatoButton("Back",15);
     LatoButton projectSettingsButton = new LatoButton("Project Settings",15);
     LatoButton addPieChartButton = new LatoButton("Add Pie Chart", 15);
+    LatoButton addLabelButton = new LatoButton("Add label",15);
     LatoButton deleteButton = new LatoButton("Delete Node",15);
 
     Node selectedItem;
@@ -60,6 +64,8 @@ public class SidePane extends Pane {
         }else if(type instanceof ProjectPane){
             setModeProjectPane((ProjectPane) type);
             selectedItem = (ProjectPane) type;
+        }else if(type instanceof Label){
+            setModeLabel((Label) type);
         }
     }
 
@@ -138,6 +144,57 @@ public class SidePane extends Pane {
         holder.add(projectSettingsButton,1,currPie.getData().size()+2);
         holder.add(deleteButton,0,currPie.getData().size()+3);
         getChildren().add(holder);
+        FadeTransition f = new FadeTransition(Duration.seconds(0.5),holder);
+        f.setFromValue(0);
+        f.setToValue(1);
+        f.play();
+    }
+
+    private void setModeLabel(Label currLabel){
+        selectedItem = currLabel;
+        GridPane holder = new GridPane();
+        Pane p = new Pane();
+        p.prefWidthProperty().bind(divide(this.widthProperty(),2));
+        Pane p2 = new Pane();
+        p2.prefWidthProperty().bind(divide(this.widthProperty(),2));
+
+        LatoLabel l = new LatoLabel("Text: ",15);
+        LatoLabel l2 = new LatoLabel("Size",15);
+
+        p.getChildren().add(l);
+        l.setPadding(new Insets(10));
+        p2.getChildren().add(l2);
+        l2.setPadding(new Insets(10));
+
+        CustomTextField textField = new CustomTextField();
+        CustomTextField sizeField = new CustomTextField();
+
+        textField.setText(currLabel.getText());
+        sizeField.setText(String.valueOf(currLabel.getFont().getSize()));
+        LatoButton confirmButton = new LatoButton("Confirm",15);
+        confirmButton.setPadding(new Insets(10));
+        getChildren().add(holder);
+
+        holder.add(p,0,0);
+        holder.add(textField,1,0);
+        holder.add(p2,0,1);
+        holder.add(sizeField,1,1);
+        holder.add(confirmButton,0,2);
+        holder.add(deleteButton,0,3);
+        holder.add(projectSettingsButton,1,2);
+
+        confirmButton.setOnMouseClicked(e->{
+            currLabel.setFont(new Font("Arial",Double.valueOf(sizeField.getText())));
+
+            if(textField.getText().length()==0){
+                currLabel.setText("Enter text");
+                setModeLabel(currLabel);
+            }else {
+                currLabel.setText(textField.getText());
+                setModeLabel(currLabel);
+            }
+        });
+
         FadeTransition f = new FadeTransition(Duration.seconds(0.5),holder);
         f.setFromValue(0);
         f.setToValue(1);
@@ -292,6 +349,7 @@ public class SidePane extends Pane {
         Pane title = new Pane();
         title.setStyle("-fx-background-color: lightgrey;");
         LatoLabel titleLabel = new LatoLabel("Project settings",15);
+        LatoButton addLabelButton = new LatoButton("Add new label", 15);
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setPadding(new Insets(10));
         title.getChildren().add(titleLabel);
@@ -302,7 +360,18 @@ public class SidePane extends Pane {
         vb.getChildren().add(closeButton);
         vb.getChildren().add(lb);
         vb.getChildren().add(addPieChartButton);
+        vb.getChildren().add(addLabelButton);
         vb.getChildren().add(exportButton);
+
+        addLabelButton.setOnMouseClicked(e->{
+            Label l = new Label("Enter Text");
+            currPane.getChildren().add(l);
+            Draggable.Nature natureL = new Draggable.Nature(l);
+            l.setOnMouseClicked(e1-> {
+                this.setMode(l);
+            });
+        });
+
 
         lb.setOnMouseClicked(e->{
             UserChooseColor.start();
@@ -327,6 +396,9 @@ public class SidePane extends Pane {
     }
     public LatoButton getDeleteButton() {
         return deleteButton;
+    }
+    public LatoButton getAddLabelButton() {
+        return addLabelButton;
     }
 
     public LatoButton getProjectSettingsButton() {
