@@ -20,6 +20,7 @@ import Graphics.LatoButton;
 
 public class AboutScreen {
 
+    //Iniialize
     private static Stage aboutStage = new Stage();
     private static ComboBox<String> b = new ComboBox<String>();
     private static StackPane root;
@@ -27,6 +28,7 @@ public class AboutScreen {
     private static String language;
 
     private static void populate(){
+        //i18n
         Locale l;
         if(b.getSelectionModel().getSelectedItem()==null){
             language = "en";
@@ -54,6 +56,7 @@ public class AboutScreen {
 
         aboutStage.show();
 
+        //Send the user to a link in their browser
         Application application = new Application() {
             @Override
             public void start(Stage stage) throws Exception {
@@ -61,6 +64,7 @@ public class AboutScreen {
             }
         };
 
+        //OnClick event handler
         label.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -72,6 +76,8 @@ public class AboutScreen {
                 }
             }
         });
+
+        //Repopulate the screen when the language is changed
         b.setOnAction(e->{
             populate();
         });

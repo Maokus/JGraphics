@@ -92,27 +92,11 @@ public class EditProj {
 
          */
 
-        for(Color c: nearColors.getColors()){
-            Rectangle r = new Rectangle();
-            r.setHeight(10);
-            r.setWidth(10);
-            r.setFill(c);
-            projectPane.getChildren().add(r);
-        }
-
         primaryStage.setFullScreen(true);
         primaryStage.setScene(new Scene(root,500,500));
 
         sidePane.getExportButton().setOnAction(e->{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
-                root.getChildren().remove(sideOverlay);
-                PngEncoder.exportPng(root,"src/Assets/saves/p.png");
-                root.getChildren().add(sideOverlay);
-            } else {
-                alert.close();
-            }
+            PngEncoder.exportPng(projectPane);
 
         });
         sidePane.getCloseButton().setOnMouseClicked(e-> {
