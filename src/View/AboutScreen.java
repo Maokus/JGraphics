@@ -45,6 +45,27 @@ public class AboutScreen {
         root.getChildren().add(label);
         root.setStyle("-fx-background-color: white");
         root.getChildren().add(b);
+
+
+        Application application = new Application() {
+            @Override
+            public void start(Stage stage) throws Exception {
+                getHostServices().showDocument("https://github.com/Maokus/JGraphics");
+            }
+        };
+
+        //OnClick event handler
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                label.setTextFill(Color.BLACK);
+                try {
+                    application.start(aboutStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void start() throws Exception {
