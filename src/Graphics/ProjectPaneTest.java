@@ -12,7 +12,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.xml.transform.Source;
-
+/*
+ * Tester class
+ */
 public class ProjectPaneTest extends Application {
 
     @Override

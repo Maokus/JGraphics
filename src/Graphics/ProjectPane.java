@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ProjectPane extends Pane {
+    //Project class for simplification.
     public ProjectPane(){
         super();
         this.setBorder(new Border(new BorderStroke(Color.BLACK,

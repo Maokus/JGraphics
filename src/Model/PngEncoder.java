@@ -21,18 +21,29 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.logging.*;
 
+//Class to save png file.
 public class PngEncoder {
     public static void exportPng(Node n,double width, double height) {
+        //Make snapshot parameters
         SnapshotParameters s = new SnapshotParameters();
-        s.setViewport(new Rectangle2D(0,0,width,height));
-        WritableImage image = n.snapshot(s, null);
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG doc(*.png)", "*.png"));
 
+        //set viewport as a rectangle.
+        s.setViewport(new Rectangle2D(0,0,width,height));
+
+        //Take snapshot
+        WritableImage image = n.snapshot(s, null);
+
+        //choose file location.
+        FileChooser fileChooser = new FileChooser();
+
+        //Check file extension
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG doc(*.png)", "*.png"));
         File f = fileChooser.showSaveDialog(null);
         if(!f.getName().contains(".")) {
             f = new File(f.getAbsolutePath() + ".png");
         }
+
+        //Save image
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", f);
         } catch (IOException e) {

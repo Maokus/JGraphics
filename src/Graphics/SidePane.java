@@ -6,9 +6,9 @@ The appropriate initializer class will then be called to change the contents of 
 
 The current supported graphic classes are:
  * Pie chart
- * Bar Graph (Half implemented)
+ * Label
+ * Bar Graph (Implementation not completed)
 
-//TODO: Implement jfilechooser for the export button
 //TODO: Implement ImageView Sidepane compatibility
 
  */

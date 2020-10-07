@@ -22,9 +22,11 @@ public class Splash extends Application {
         // Width and height
         final int WIDTH = 700;
         final int HEIGHT = 500;
+
         //Root pane
         Pane root = new Pane();
         root.setStyle("-fx-background-color: white");
+
         //Start screen display
         Media media = new Media(Paths.get("src/Assets/graphics.mp4").toUri().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -32,12 +34,13 @@ public class Splash extends Application {
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaView.setPreserveRatio(true);
         mediaView.fitWidthProperty().bind(root.widthProperty());
+
         //VBOX to hold stuff
         VBox vb = new VBox();
         vb.getChildren().add(mediaView);
         vb.setAlignment(Pos.CENTER);
-
         root.getChildren().add(vb);
+
         //Setting stage things
         primaryStage.setTitle("JGraphics");
         primaryStage.getIcons().add(new Image(Paths.get("src/Assets/JG.jpg").toUri().toString()));

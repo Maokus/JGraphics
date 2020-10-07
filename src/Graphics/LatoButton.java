@@ -18,6 +18,8 @@ public class LatoButton extends Button {
 
         this.fontSize = fontSize;
 
+        //Event handlers to track leaving and entering of mouse to highlight the button.
+
         this.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

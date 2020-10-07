@@ -38,6 +38,7 @@ public class AboutScreen {
         l = new Locale(language,"US");
         ResourceBundle rb = ResourceBundle.getBundle("Assets/AboutScreen",l);
 
+        //Reinit the whole pane
         root = new StackPane();
         aboutStage.setScene(new Scene(root,500,500));
         label = new LatoButton(rb.getString("builtby"),20);
