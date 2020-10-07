@@ -23,7 +23,9 @@ public class ProjectSettings {
         GridPane holder = new GridPane();
         root.getChildren().add(holder);
         CustomTextField widthField = new CustomTextField();
+        widthField.setPromptText("Rec. <10000");
         CustomTextField heightField = new CustomTextField();
+        heightField.setPromptText("Rec. <10000");
         holder.add(new LatoLabel("Width: ",15),0,0);
         holder.add(widthField,1,0);
         holder.add(new LatoLabel("Height: ",15),0,1);

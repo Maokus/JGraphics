@@ -163,6 +163,7 @@ public class SidePane extends Pane {
     }
 
     private void setModeLabel(Label currLabel){
+        System.out.println("Setting label");
         selectedItem = currLabel;
         GridPane holder = new GridPane();
         Pane p = new Pane();
@@ -354,7 +355,6 @@ public class SidePane extends Pane {
      */
 
     private void setModeProjectPane(ProjectPane currPane){
-        setManaged(true);
         StackPane stackPane = new StackPane();
         stackPane.prefWidthProperty().bind(this.widthProperty());
         VBox vb = new VBox();
@@ -363,7 +363,6 @@ public class SidePane extends Pane {
         Pane title = new Pane();
         title.setStyle("-fx-background-color: lightgrey;");
         LatoLabel titleLabel = new LatoLabel("Project settings",15);
-        LatoButton addLabelButton = new LatoButton("Add new label", 15);
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setPadding(new Insets(10));
         title.getChildren().add(titleLabel);
@@ -376,15 +375,6 @@ public class SidePane extends Pane {
         vb.getChildren().add(addPieChartButton);
         vb.getChildren().add(addLabelButton);
         vb.getChildren().add(exportButton);
-
-        addLabelButton.setOnMouseClicked(e->{
-            Label l = new Label("Enter Text");
-            currPane.getChildren().add(l);
-            Draggable.Nature natureL = new Draggable.Nature(l);
-            l.setOnMouseClicked(e1-> {
-                this.setMode(l);
-            });
-        });
 
 
         lb.setOnMouseClicked(e->{

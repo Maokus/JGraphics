@@ -22,8 +22,10 @@ import java.nio.file.*;
 import java.util.logging.*;
 
 public class PngEncoder {
-    public static void exportPng(Node n) {
-        WritableImage image = n.snapshot(new SnapshotParameters(), null);
+    public static void exportPng(Node n,double width, double height) {
+        SnapshotParameters s = new SnapshotParameters();
+        s.setViewport(new Rectangle2D(0,0,width,height));
+        WritableImage image = n.snapshot(s, null);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG doc(*.png)", "*.png"));
 

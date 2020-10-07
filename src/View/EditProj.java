@@ -97,10 +97,16 @@ public class EditProj {
         primaryStage.setScene(new Scene(root,500,500));
 
         sidePane.getExportButton().setOnAction(e->{
-            PngEncoder.exportPng(projectPane);
+            PngEncoder.exportPng(projectPane,projectWidth,projectHeight);
 
         });
         sidePane.getCloseButton().setOnMouseClicked(e-> {
+                if(projectPane.getChildren().size()==0){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("There are no nodes in the project pane.");
+                    alert.show();
+                    return;
+                }
                 sidePane.setManaged(false);
                 scrollPane.prefWidthProperty().bind(root.widthProperty());
             }
@@ -116,6 +122,17 @@ public class EditProj {
             newPieChart.setOnMouseClicked(event1->{
                 scrollPane.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
                 sidePane.setMode(newPieChart);
+            });
+        });
+
+        sidePane.getAddLabelButton().setOnMouseClicked(e->{
+            System.out.println("Hello!");
+            Label l = new Label("Enter Text");
+            projectPane.getChildren().add(l);
+            Draggable.Nature natureL = new Draggable.Nature(l);
+            l.setOnMouseClicked(e1-> {
+                scrollPane.prefWidthProperty().bind(subtract(root.widthProperty(),sidePane.widthProperty()));
+                sidePane.setMode(l);
             });
         });
 
