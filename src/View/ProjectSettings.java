@@ -5,6 +5,7 @@ import Graphics.LatoButton;
 import Graphics.LatoLabel;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -40,6 +41,17 @@ public class ProjectSettings {
             secStage.close();
         });
         confirmButton.setOnMouseClicked(e->{
+            try{
+                Integer.valueOf(widthField.getText());
+                Integer.valueOf(heightField.getText());
+            }catch(Exception ex){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error parsing integers.");
+                alert.showAndWait();
+                widthField.setText("");
+                heightField.setText("");
+                return;
+            }
             EditProj.start(primary,Integer.valueOf(widthField.getText()), Integer.valueOf(heightField.getText()));
             secStage.close();
         });

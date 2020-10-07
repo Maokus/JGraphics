@@ -5,6 +5,7 @@ import javafx.collections.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.*;
 import javafx.scene.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
@@ -23,24 +24,21 @@ import java.util.logging.*;
 public class PngEncoder {
     public static void exportPng(Node n) {
         WritableImage image = n.snapshot(new SnapshotParameters(), null);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG doc(*.png)", "*.png"));
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG doc(*.png)", "*.png"));
 
-                File f = fileChooser.showSaveDialog(null);
-                if(!f.getName().contains(".")) {
-                    f = new File(f.getAbsolutePath() + ".png");
-                }
-                try {
-                    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", f);
-                } catch (IOException e) {
-                    // TODO: handle exception here
-                }
-            }
-        });
-        thread.run();
+        File f = fileChooser.showSaveDialog(null);
+        if(!f.getName().contains(".")) {
+            f = new File(f.getAbsolutePath() + ".png");
+        }
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", f);
+        } catch (IOException e) {
+            System.out.println("Error exporting to png.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Error exporting to png.");
+            alert.show();
+        }
 
     }
 

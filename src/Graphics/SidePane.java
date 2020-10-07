@@ -23,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -54,6 +55,8 @@ public class SidePane extends Pane {
     }
 
     public void setMode(Node type){
+        //Sets mode
+        setManaged(true);
         getChildren().clear();
         if(type instanceof PieChart) {
             setModePieChart((PieChart) type);
@@ -70,7 +73,6 @@ public class SidePane extends Pane {
     }
 
     private void setModePieChart(PieChart currPie){
-        setManaged(true);
         GridPane holder = new GridPane();
         Label pane1 = new Label("Labels");
         pane1.setPadding(new Insets(10));
@@ -125,6 +127,16 @@ public class SidePane extends Pane {
         });
 
         confirmButton.setOnAction(e->{
+            try {
+                for (int i = 0; i < currPie.getData().size(); i++) {
+                    Double.valueOf(dataValues.get(i).getText());
+                }
+            }catch (IllegalArgumentException ex){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error parsing integers.");
+                alert.showAndWait();
+                return;
+            }
             for(int i=0;i<currPie.getData().size();i++){
                 try {
                     currPie.getData().add(new PieChart.Data(dataTypes.get(i).getText(),
@@ -159,7 +171,7 @@ public class SidePane extends Pane {
         p2.prefWidthProperty().bind(divide(this.widthProperty(),2));
 
         LatoLabel l = new LatoLabel("Text: ",15);
-        LatoLabel l2 = new LatoLabel("Size",15);
+        LatoLabel l2 = new LatoLabel("Size ",15);
 
         p.getChildren().add(l);
         l.setPadding(new Insets(10));
@@ -324,6 +336,7 @@ public class SidePane extends Pane {
     }
 
     //No function yet
+    /*
     private void setModePane(Pane currPane){
         VBox vBox = new VBox();
         UserColorPalatte pc = EditProj.getNearColors();
@@ -338,6 +351,7 @@ public class SidePane extends Pane {
         getChildren().add(exportButton);
         getChildren().add(closeButton);
     }
+     */
 
     private void setModeProjectPane(ProjectPane currPane){
         setManaged(true);
@@ -391,6 +405,7 @@ public class SidePane extends Pane {
         return closeButton;
     }
     public LatoButton getBackButton() { return backButton;}
+
     public LatoButton getAddPieChartButton() {
         return addPieChartButton;
     }

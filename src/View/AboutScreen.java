@@ -47,6 +47,7 @@ public class AboutScreen {
     }
 
     public static void start() throws Exception {
+        b.getItems().clear();
         b.getItems().add("en");
         b.getItems().add("zh");
 
